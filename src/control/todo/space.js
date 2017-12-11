@@ -17,7 +17,7 @@ const down = (store) => {
       const cur = state.get('cur');
       if (cur !== null) { // 置底
         if (state.get('pause')) {
-          states.pause(false);
+          // states.pause(false);
           return;
         }
         if (music.fall) {

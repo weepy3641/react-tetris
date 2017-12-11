@@ -1,8 +1,8 @@
 import { List } from 'immutable';
 import store from '../store';
-import { want, isClear, isOver } from '../unit/';
+import { want, isClear, isOver, isSuccess } from '../unit/';
 import actions from '../actions';
-import { speeds, blankLine, blankMatrix, clearPoints, eachLines } from '../unit/const';
+import { lastRecord, speeds, blankLine, blankMatrix, clearPoints, eachLines } from '../unit/const';
 import { music } from '../unit/music';
 
 
@@ -23,8 +23,16 @@ const getStartMatrix = (startLines) => { // 生成startLines
   let startMatrix = List([]);
 
   for (let i = 0; i < startLines; i++) {
-    if (i <= 2) { // 0-3
-      startMatrix = startMatrix.push(getLine(5, 8));
+    if (i === startLines - 1) { // 0-3
+      startMatrix = startMatrix.push(List([5, 5, 5, 0, 3, 3, 0, 4, 4, 0]));
+    } else if (i === startLines - 2) {
+      startMatrix = startMatrix.push(List([5, 0, 5, 0, 3, 0, 0, 4, 0, 4]));
+    } else if (i === startLines - 3) {
+      startMatrix = startMatrix.push(List([5, 0, 5, 0, 3, 3, 0, 4, 0, 4]));
+    } else if (i === startLines - 4) {
+      startMatrix = startMatrix.push(List([5, 0, 5, 0, 3, 0, 0, 4, 0, 4]));
+    } else if (i === startLines - 5) {
+      startMatrix = startMatrix.push(List([5, 0, 5, 0, 3, 3, 0, 4, 4, 0]));
     } else if (i <= 6) { // 4-6
       startMatrix = startMatrix.push(getLine(4, 9));
     } else { // 7-9
@@ -43,6 +51,7 @@ const states = {
 
   // 游戏开始
   start: () => {
+    if (states.success || states.youDead) { return; }
     if (music.start) {
       music.start();
     }
@@ -65,6 +74,7 @@ const states = {
     const fall = () => {
       state = store.getState();
       cur = state.get('cur');
+      if (!cur) return;
       const next = cur.fall();
       if (want(next, state.get('matrix'))) {
         store.dispatch(actions.moveBlock(next));
@@ -139,7 +149,10 @@ const states = {
   },
 
   // 暂停
-  pause: (isPause) => {
+  pause: (isPause, must) => {
+    if (states.success && !must) {
+      return;
+    }
     store.dispatch(actions.pause(isPause));
     if (isPause) {
       clearTimeout(states.fallInterval);
@@ -151,12 +164,24 @@ const states = {
   // 消除行
   clearLines: (matrix, lines) => {
     const state = store.getState();
+    let success = false;
     let newMatrix = matrix;
     lines.forEach(n => {
       newMatrix = newMatrix.splice(n, 1);
       newMatrix = newMatrix.unshift(List(blankLine));
     });
-    store.dispatch(actions.matrix(newMatrix));
+
+    if (isSuccess(newMatrix)) {
+      if (lastRecord.success) {
+        states.notFirstSuccess = true;
+      }
+      states.success = true;
+      store.dispatch(actions.success(true));
+      success = true;
+      store.dispatch(actions.matrix(newMatrix));
+    } else {
+      store.dispatch(actions.matrix(newMatrix));
+    }
     store.dispatch(actions.moveBlock({ type: state.get('next') }));
     store.dispatch(actions.nextBlock());
     states.auto();
@@ -172,6 +197,15 @@ const states = {
     let speedNow = state.get('speedStart') + speedAdd;
     speedNow = speedNow > 6 ? 6 : speedNow;
     store.dispatch(actions.speedRun(speedNow));
+
+    if (success) {
+      if (music.clear) {
+        music.clear();
+      }
+      states.overEnd();
+      // states.pause(true, true);
+      return;
+    }
   },
 
   // 游戏结束, 触发动画

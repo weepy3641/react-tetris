@@ -3,7 +3,14 @@ import cn from 'classnames';
 import propTypes from 'prop-types';
 
 import style from './index.less';
-import { i18n, lan } from '../../unit/const';
+import i18n from '../../../i18n.json';
+import states from '../../control/states';
+
+
+const randomIndex = Math.floor(Math.random() * 5);
+
+
+const titleCenter = i18n.advertisements[randomIndex];
 
 export default class Logo extends React.Component {
   constructor() {
@@ -134,10 +141,39 @@ export default class Logo extends React.Component {
     if (this.props.cur) {
       return null;
     }
+    if (states.youDead) {
+      return (
+        <div className={style.logo} style={{ display: this.state.display }}>
+          <div className={cn({ bg: true, [style.dragon]: true, [this.state.style]: true })} />
+          <p style={{ top: '90px', fontWeight: 'bold' }}>时间到，游戏结束</p>
+        </div>
+      );
+    } else if (states.success && !states.notFirstSuccess) {
+      return (
+        <div className={style.logo} style={{ display: this.state.display }}>
+          <div className={cn({ bg: true, [style.dragon]: true, [this.state.style]: true })} />
+          <p style={{ top: '90px', fontWeight: 'bold' }}>游戏成功,可以领取奖品咯!</p>
+          <p style={{ top: '150px', fontSize: '12px' }}>奖品先到先得，只能领取一次。非第一次完成游戏将不能领取奖品。</p>
+          <p style={{ top: '180px', fontSize: '12px' }}>最终解释权归阿里国际UED所有</p>
+        </div>
+      );
+    } else if (states.success && states.notFirstSuccess) {
+      return (
+        <div className={style.logo} style={{ display: this.state.display }}>
+          <div className={cn({ bg: true, [style.dragon]: true, [this.state.style]: true })} />
+          <p style={{ top: '90px', fontWeight: 'bold' }}>游戏成功,貌似你已经领取过奖品了哦!</p>
+          <p style={{ top: '150px', fontSize: '12px' }}>奖品只能领取一次</p>
+          <p style={{ top: '170px', fontSize: '12px' }}>最终解释权归阿里国际UED所有</p>
+        </div>
+      );
+    }
+
     return (
       <div className={style.logo} style={{ display: this.state.display }}>
         <div className={cn({ bg: true, [style.dragon]: true, [this.state.style]: true })} />
-        <p dangerouslySetInnerHTML={{ __html: i18n.titleCenter[lan] }} />
+        <p
+          dangerouslySetInnerHTML={{ __html: titleCenter }}
+        />
       </div>
     );
   }

@@ -49,27 +49,28 @@ const down = (store) => {
       },
     });
   } else {
-    event.down({
-      key: 'down',
-      begin: 200,
-      interval: 100,
-      callback: () => {
-        if (store.getState().get('lock')) {
-          return;
-        }
-        const state = store.getState();
-        const cur = state.get('cur');
-        if (cur) {
-          return;
-        }
-        if (music.move) {
-          music.move();
-        }
-        let startLines = state.get('startLines');
-        startLines = startLines - 1 < 0 ? 10 : startLines - 1;
-        store.dispatch(actions.startLines(startLines));
-      },
-    });
+    return;
+    // event.down({
+    //   key: 'down',
+    //   begin: 200,
+    //   interval: 100,
+    //   callback: () => {
+    //     if (store.getState().get('lock')) {
+    //       return;
+    //     }
+    //     const state = store.getState();
+    //     const cur = state.get('cur');
+    //     if (cur) {
+    //       return;
+    //     }
+    //     if (music.move) {
+    //       music.move();
+    //     }
+    //     let startLines = state.get('startLines');
+    //     startLines = startLines - 1 < 0 ? 10 : startLines - 1;
+    //     store.dispatch(actions.startLines(startLines));
+    //   },
+    // });
   }
 };
 

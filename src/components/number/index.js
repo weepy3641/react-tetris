@@ -3,6 +3,8 @@ import cn from 'classnames';
 import propTypes from 'prop-types';
 
 import style from './index.less';
+import states from '../../control/states';
+
 
 const render = (data) => (
   <div className={style.number}>
@@ -23,6 +25,7 @@ export default class Number extends React.Component {
   constructor() {
     super();
     this.state = {
+      startTime: new Date(),
       time_count: false,
       time: new Date(),
     };
@@ -55,6 +58,14 @@ export default class Number extends React.Component {
     }
     return this.props.number !== number;
   }
+  componentDidUpdate() {
+    if (states.youDead && !states.showDead && !states.success) {
+      states.overStart();
+      states.showDead = true;
+      // states.youDead = true;
+    }
+    return true;
+  }
   componentWillUnmount() {
     if (!this.props.time) {
       return;
@@ -63,11 +74,19 @@ export default class Number extends React.Component {
   }
   render() {
     if (this.props.time) { // 右下角时钟
-      const now = this.state.time;
-      const hour = formate(now.getHours());
-      const min = formate(now.getMinutes());
-      const sec = now.getSeconds() % 2;
-      const t = hour.concat(sec ? 'd' : 'd_c', min);
+      let remianTime = (2 * 60 * 1000) - (Date.parse(new Date()) - this.state.startTime);
+      if (remianTime <= 0) {
+        if (!states.youDead && !states.success) {
+          // states.overStart();
+          states.youDead = true;
+        }
+        remianTime = 0;
+      }
+      const seconds = Math.floor((remianTime / 1000) % 60);
+      const minutes = Math.floor((remianTime / 1000 / 60) % 60);
+      const rmin = formate(minutes);
+      const rsec = formate(seconds);
+      const t = rmin.concat('d_c', rsec);
       return (render(t));
     }
 

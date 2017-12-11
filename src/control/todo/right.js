@@ -40,9 +40,9 @@ const down = (store) => {
         const remain = speeds[state.get('speedRun') - 1] - (Date.now() - timeStamp);
         states.auto(remain);
       } else {
-        let speed = state.get('speedStart');
-        speed = speed + 1 > 6 ? 1 : speed + 1;
-        store.dispatch(actions.speedStart(speed));
+        // let speed = state.get('speedStart');
+        // speed = speed + 1 > 6 ? 1 : speed + 1;
+        // store.dispatch(actions.speedStart(speed));
       }
     },
   });

@@ -32,27 +32,28 @@ const down = (store) => {
       },
     });
   } else {
-    event.down({
-      key: 'rotate',
-      begin: 200,
-      interval: 100,
-      callback: () => {
-        if (store.getState().get('lock')) {
-          return;
-        }
-        if (music.move) {
-          music.move();
-        }
-        const state = store.getState();
-        const cur = state.get('cur');
-        if (cur) {
-          return;
-        }
-        let startLines = state.get('startLines');
-        startLines = startLines + 1 > 10 ? 0 : startLines + 1;
-        store.dispatch(actions.startLines(startLines));
-      },
-    });
+    return;
+    // event.down({
+    //   key: 'rotate',
+    //   begin: 200,
+    //   interval: 100,
+    //   callback: () => {
+    //     if (store.getState().get('lock')) {
+    //       return;
+    //     }
+    //     if (music.move) {
+    //       music.move();
+    //     }
+    //     const state = store.getState();
+    //     const cur = state.get('cur');
+    //     if (cur) {
+    //       return;
+    //     }
+    //     let startLines = state.get('startLines');
+    //     startLines = startLines + 1 > 10 ? 0 : startLines + 1;
+    //     store.dispatch(actions.startLines(startLines));
+    //   },
+    // });
   }
 };
 

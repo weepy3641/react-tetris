@@ -7,6 +7,8 @@ if (initState < 1 || initState > 6) {
   initState = 1;
 }
 
+initState = 4;
+
 const speedStart = (state = initState, action) => {
   switch (action.type) {
     case reducerType.SPEED_START:

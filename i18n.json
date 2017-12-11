@@ -1,9 +1,16 @@
 {
   "lan": ["cn", "en", "fr", "fa"],
   "default": "cn",
+  "advertisements": [
+    "BizCharts<div/>数据可视化解决方案.",
+    "北斗<div/>让同构开发更简单!",
+    "阿里云前端监控<div/>基于阿里云ARMS平台的前端实时监控系统.",
+    "NUKE<div/>跨端、高性能 weex 组件体系.",
+    "AutoLayout<div/>智能设计助理."
+  ],
   "data": {
     "title": {
-      "cn": "俄罗斯方块",
+      "cn": "国际UED",
       "en": "T E T R I S",
       "fr": "T E T R I S",
       "fa": "خانه سازی"
@@ -33,7 +40,7 @@
       "fa": "اسکن کیوآر کد برای بازی در تلفن همراه"
     },
     "titleCenter": {
-      "cn": "俄罗斯方块<br />TETRIS",
+      "cn": "国际UED<br />BizCharts 数据可视化解决方案",
       "en": "TETRIS",
       "fr": "TETRIS",
       "fa": "خانه سازی"

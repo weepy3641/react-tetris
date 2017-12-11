@@ -16,7 +16,7 @@ import Logo from '../components/logo';
 import Keyboard from '../components/keyboard';
 import Guide from '../components/guide';
 
-import { transform, lastRecord, speeds, i18n, lan } from '../unit/const';
+import { transform, /* lastRecord,  speeds, */ i18n, lan } from '../unit/const';
 import { visibilityChangeEvent, isFocus } from '../unit/';
 import states from '../control/states';
 
@@ -38,20 +38,26 @@ class App extends React.Component {
       }, false);
     }
 
-    if (lastRecord) { // 读取记录
-      if (lastRecord.cur && !lastRecord.pause) { // 拿到上一次游戏的状态, 如果在游戏中且没有暂停, 游戏继续
-        const speedRun = this.props.speedRun;
-        let timeout = speeds[speedRun - 1] / 2; // 继续时, 给予当前下落速度一半的停留时间
-        // 停留时间不小于最快速的速度
-        timeout = speedRun < speeds[speeds.length - 1] ? speeds[speeds.length - 1] : speedRun;
-        states.auto(timeout);
-      }
-      if (!lastRecord.cur) {
-        states.overStart();
-      }
-    } else {
-      states.overStart();
-    }
+    // if (lastRecord && false) { // 读取记录
+    //   if (lastRecord.cur && !lastRecord.pause) { // 拿到上一次游戏的状态, 如果在游戏中且没有暂停, 游戏继续
+    //     const speedRun = this.props.speedRun;
+    //     let timeout = speeds[speedRun - 1] / 2; // 继续时, 给予当前下落速度一半的停留时间
+    //     // 停留时间不小于最快速的速度
+    //     timeout = speedRun < speeds[speeds.length - 1] ? speeds[speeds.length - 1] : speedRun;
+    //     states.auto(timeout);
+    //   }
+    //   if (!lastRecord.cur) {
+    //     states.overStart();
+    //   }
+    // } else {
+    //   states.overStart();
+    // }
+
+    // if (lastRecord.success) {
+    //   return;
+    // }
+
+    states.overStart();
   }
   resize() {
     this.setState({

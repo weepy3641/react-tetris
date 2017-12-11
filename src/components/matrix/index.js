@@ -149,19 +149,32 @@ export default class Matrix extends React.Component {
       matrix = this.getResult();
     }
     return (
-      <div className={style.matrix}>{
+      <div className={style.matrix} style={{ position: 'relative' }}>
+        {/* <div
+          style={{
+            position: 'absolute',
+            top: 80,
+            left: 0,
+            background: 'rgba(255, 255, 255, 1)' }}
+        >
+          BizCharts:基于 G2 React 的数据可视化解决方案。
+        </div> */}
+        {
           matrix.map((p, k1) => (<p key={k1}>
             {
               p.map((e, k2) => <b
                 className={classnames({
                   c: e === 1,
                   d: e === 2,
+                  e: e === 5,
+                  f: e === 3,
+                  g: e === 4,
                 })}
                 key={k2}
               />)
             }
           </p>))
-      }
+        }
       </div>
     );
   }

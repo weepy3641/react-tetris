@@ -28,7 +28,13 @@ const isFocus = () => {
 const unit = {
   getNextType() { // 随机获取下一个方块类型
     const len = blockType.length;
-    return blockType[Math.floor(Math.random() * len)];
+    const total = len + 4;
+    let randomIndex = Math.floor(Math.random() * total);
+    if (randomIndex >= len) {
+      randomIndex = 0;
+    }
+
+    return blockType[randomIndex];
   },
   want(next, matrix) { // 方块是否能移到到指定位置
     const xy = next.xy;
@@ -72,6 +78,9 @@ const unit = {
   },
   isOver(matrix) { // 游戏是否结束, 第一行落下方块为依据
     return matrix.get(0).some(n => !!n);
+  },
+  isSuccess(matrix) {
+    return !matrix.get(matrix.size - 1).some(n => n > 2);
   },
   subscribeRecord(store) { // 将状态记录到 localStorage
     store.subscribe(() => {
